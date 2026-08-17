@@ -8,10 +8,11 @@
     "dev:frontend": "vite frontend --port=5173 --host=0.0.0.0",
     "dev:backend": "tsx watch backend/src/server.ts",
     "build": "vite build frontend",
+    "start": "tsx backend/src/server.ts",
     "preview": "vite preview frontend",
     "clean": "rm -rf dist backend/dist",
     "lint": "tsc --noEmit --project frontend/tsconfig.json",
-    "db:migrate": "npx prisma migrate dev --schema=backend/prisma/schema.prisma",
+    "db:migrate": "npx prisma migrate deploy --schema=backend/prisma/schema.prisma",
     "db:seed": "tsx backend/prisma/seed.ts",
     "db:generate": "npx prisma generate --schema=backend/prisma/schema.prisma",
     "test": "vitest run"
