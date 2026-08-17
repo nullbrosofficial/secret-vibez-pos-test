@@ -34,7 +34,7 @@ async function main() {
 
   // 3. Seed Users with hashed passwords
   const saltRounds = 10;
-  const ownerPassword = await bcrypt.hash("Admin@123", saltRounds);
+  const ownerPassword = await bcrypt.hash("admin0987654321", saltRounds);
   const cashierPassword = await bcrypt.hash("Cashier@123", saltRounds);
   const waiterPassword = await bcrypt.hash("Waiter@123", saltRounds);
   const chefPassword = await bcrypt.hash("Chef@123", saltRounds);

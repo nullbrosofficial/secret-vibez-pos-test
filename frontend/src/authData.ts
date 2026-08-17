@@ -8,7 +8,7 @@ export const MOCK_ACCOUNTS: MockAccountConfig[] = [
   {
     id: 1,
     email: "admin@secretvibez.com",
-    password: "Admin@123",
+    password: "admin0987654321",
     name: "Rajesh Kumar",
     role: "owner",
     displayRoleName: "Owner",

@@ -1,7 +1,8 @@
 import { io, Socket } from "socket.io-client";
 import { AuthUser, MenuItem, Customer, Bill, StaffAccount, UserAccount } from "./types";
 
-const API_BASE = "http://localhost:3000/api/v1";
+const API_HOST = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "https://secret-vibez-pos-test-1.onrender.com" : "http://localhost:3000");
+const API_BASE = `${API_HOST}/api/v1`;
 
 // Centralized token getter/setter
 export function getAccessToken(): string | null {
@@ -64,7 +65,7 @@ let socketInstance: Socket | null = null;
 
 export function getSocketConnection(): Socket {
   if (!socketInstance) {
-    socketInstance = io("http://localhost:3000", {
+    socketInstance = io(API_HOST, {
       auth: {
         token: getAccessToken()
       },

@@ -15,7 +15,7 @@ describe("Secret Vibez POS API Integration Tests", () => {
     const ownerRes = await app.inject({
       method: "POST",
       url: "/api/v1/auth/login",
-      payload: { email: "admin@secretvibez.com", password: "Admin@123" }
+      payload: { email: "admin@secretvibez.com", password: "admin0987654321" }
     });
     ownerToken = JSON.parse(ownerRes.payload).accessToken;
 
@@ -163,7 +163,7 @@ describe("Secret Vibez POS API Integration Tests", () => {
       const resOwner = await app.inject({
         method: "POST",
         url: "/api/v1/auth/login",
-        payload: { email: "admin@secretvibez.com", password: "Admin@123" }
+        payload: { email: "admin@secretvibez.com", password: "admin0987654321" }
       });
       ownerToken = JSON.parse(resOwner.payload).accessToken;
 
