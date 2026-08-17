@@ -1,0 +1,27 @@
+{
+  "name": "Secret Vibez Restaurant POS",
+  "short_name": "SecretVibez",
+  "description": "Full-stack Point of Sale & Desk Management System",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1C1C1E",
+  "theme_color": "#E8872A",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

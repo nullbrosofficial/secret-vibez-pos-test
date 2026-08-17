@@ -1,0 +1,135 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique // OWNER, CASHIER, WAITER, CHEF
+  description String?
+  users       User[]
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  password  String    // bcrypt hash
+  name      String
+  roleId    Int
+  role      Role      @relation(fields: [roleId], references: [id])
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  payments  Payment[]
+  orders    Order[]
+}
+
+model MenuCategory {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  menuItems MenuItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model MenuItem {
+  id           Int          @id @default(autoincrement())
+  name         String
+  description  String?
+  price        Float
+  categoryId   Int
+  category     MenuCategory @relation(fields: [categoryId], references: [id])
+  vegNonVeg    String       @default("Veg") // "Veg" or "Non-Veg"
+  availability Boolean      @default(true)
+  orderItems   OrderItem[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model RestaurantTable {
+  id          Int      @id @default(autoincrement())
+  tableNumber String   @unique
+  capacity    Int
+  status      String   @default("AVAILABLE") // AVAILABLE, OCCUPIED, BILL_REQUESTED, CLEANING
+  orders      Order[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Customer {
+  id        Int      @id @default(autoincrement())
+  name      String
+  whatsapp  String   @unique
+  visits    Int      @default(0)
+  spent     Float    @default(0.0)
+  birthday  String?  // YYYY-MM-DD
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id          Int             @id @default(autoincrement())
+  orderNo     String          @unique // E.g., BILL-0041, BILL-0042
+  tableId     Int?
+  table       RestaurantTable? @relation(fields: [tableId], references: [id])
+  customerId  Int?
+  customer    Customer?       @relation(fields: [customerId], references: [id])
+  userId      Int?
+  user        User?           @relation(fields: [userId], references: [id])
+  items       OrderItem[]
+  subtotal    Float
+  discount    Float           @default(0.0)
+  tax         Float
+  grandTotal  Float
+  status      String          @default("DRAFT") // DRAFT, CONFIRMED, SENT_TO_KITCHEN, PREPARING, READY, SERVED, BILL_REQUESTED, PAID, COMPLETED, CANCELLED
+  payment     Payment?
+  date        String          // YYYY-MM-DD
+  timestamp   String          // HH:MM AM/PM
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model OrderItem {
+  id         Int      @id @default(autoincrement())
+  orderId    Int
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItemId Int
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+  itemName   String
+  price      Float
+  quantity   Int
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Payment {
+  id            Int      @id @default(autoincrement())
+  orderId       Int      @unique
+  order         Order    @relation(fields: [orderId], references: [id])
+  amount        Float
+  paymentMethod String   // Cash, UPI / QR, Card
+  status        String   @default("COMPLETED")
+  timestamp     DateTime @default(now())
+  userId        Int?
+  cashier       User?    @relation(fields: [userId], references: [id])
+}
+
+model RestaurantSettings {
+  id             Int      @id @default(1)
+  restaurantName String   @default("Secret Vibez")
+  address        String   @default("Beach Road, Calangute, Goa 403516")
+  phone          String   @default("+91 98765 43210")
+  gstNumber      String   @default("30AABCS1429B1Z8")
+  receiptHeader  String   @default("Welcome to Secret Vibez • Food & Stay")
+  receiptFooter  String   @default("Thank you for dining with us! Follow us @secretvibez")
+  isGstEnabled   Boolean  @default(true)
+  gstRate        Float    @default(5.0)
+  currency       String   @default("INR")
+  updatedAt      DateTime @updatedAt
+}
