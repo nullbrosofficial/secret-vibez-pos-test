@@ -31,6 +31,18 @@ describe("Secret Vibez POS API Integration Tests", () => {
     await app.close();
   });
 
+  // 0. Health Check Test
+  it("should return ok status on GET /api/v1/health", async () => {
+    const response = await app.inject({
+      method: "GET",
+      url: "/api/v1/health"
+    });
+
+    expect(response.statusCode).toBe(200);
+    const body = JSON.parse(response.payload);
+    expect(body).toEqual({ status: "ok" });
+  });
+
   // 1. Auth Login Tests
   it("should fail login with invalid credentials", async () => {
     const response = await app.inject({

@@ -116,6 +116,11 @@ export function buildApp(): FastifyInstance {
 
   // Register Routes
   fastify.register(async (api) => {
+    // Health Check Endpoint
+    api.get("/health", async (request, reply) => {
+      return { status: "ok" };
+    });
+
     api.register(authRoutes, { prefix: "/auth" });
     api.register(categoryRoutes, { prefix: "/categories" });
     api.register(menuRoutes, { prefix: "/menu" });
