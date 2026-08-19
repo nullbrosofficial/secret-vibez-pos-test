@@ -102,21 +102,6 @@ async function main() {
     ]
   });
 
-  // 6. Seed Customers
-  await prisma.customer.createMany({
-    data: [
-      { name: "Arjun Sharma", whatsapp: "9876543210", visits: 14, spent: 4820.0, birthday: "1990-03-15" },
-      { name: "Priya Nair", whatsapp: "9845012345", visits: 7, spent: 2100.0, birthday: "1995-07-22" },
-      { name: "Ravi Kumar", whatsapp: "9901234567", visits: 22, spent: 7300.0, birthday: "1988-11-05" },
-      { name: "Meena Patel", whatsapp: "9712345678", visits: 3, spent: 850.0, birthday: "2000-01-30" },
-      { name: "Suresh Babu", whatsapp: "9632145870", visits: 11, spent: 3600.0, birthday: "1982-09-18" },
-      { name: "Rohan Verma", whatsapp: "9820123456", visits: 8, spent: 2450.0, birthday: "1993-04-12" },
-      { name: "Aditi Rao", whatsapp: "9510293847", visits: 5, spent: 1540.0, birthday: "1997-12-05" },
-      { name: "Vikram Singh", whatsapp: "9123456789", visits: 18, spent: 5900.0, birthday: "1985-05-25" },
-      { name: "Neha Gupta", whatsapp: "9818273645", visits: 12, spent: 4100.0, birthday: "1991-08-09" }
-    ]
-  });
-
   // 7. Seed Settings
   await prisma.restaurantSettings.create({
     data: {

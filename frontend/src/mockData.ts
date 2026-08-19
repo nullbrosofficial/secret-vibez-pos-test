@@ -1,4 +1,4 @@
-import { MenuItem, Customer, Bill, StaffAccount } from "./types";
+import { MenuItem, Bill, StaffAccount } from "./types";
 
 export const INITIAL_CATEGORIES = ["Starters", "Main Course", "Beverages", "Desserts"];
 
@@ -17,23 +17,11 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   { id: 12, name: "Kulfi Falooda", category: "Desserts", price: 90 }
 ];
 
-export const INITIAL_CUSTOMERS: Customer[] = [
-  { id: 1, name: "Arjun Sharma", whatsapp: "9876543210", visits: 14, spent: 4820, birthday: "1990-03-15" },
-  { id: 2, name: "Priya Nair", whatsapp: "9845012345", visits: 7, spent: 2100, birthday: "1995-07-22" },
-  { id: 3, name: "Ravi Kumar", whatsapp: "9901234567", visits: 22, spent: 7300, birthday: "1988-11-05" },
-  { id: 4, name: "Meena Patel", whatsapp: "9712345678", visits: 3, spent: 850, birthday: "2000-01-30" },
-  { id: 5, name: "Suresh Babu", whatsapp: "9632145870", visits: 11, spent: 3600, birthday: "1982-09-18" },
-  { id: 6, name: "Rohan Verma", whatsapp: "9820123456", visits: 8, spent: 2450, birthday: "1993-04-12" },
-  { id: 7, name: "Aditi Rao", whatsapp: "9510293847", visits: 5, spent: 1540, birthday: "1997-12-05" },
-  { id: 8, name: "Vikram Singh", whatsapp: "9123456789", visits: 18, spent: 5900, birthday: "1985-05-25" },
-  { id: 9, name: "Neha Gupta", whatsapp: "9818273645", visits: 12, spent: 4100, birthday: "1991-08-09" }
-];
-
 export const INITIAL_BILLS: Bill[] = [
   {
     billNo: "BILL-0041",
-    customerName: "Arjun Sharma",
-    customerWhatsapp: "9876543210",
+    customerName: "Walk-in Customer",
+    customerWhatsapp: undefined,
     items: [
       { itemId: 3, itemName: "Butter Chicken", price: 280, quantity: 1 },
       { itemId: 2, itemName: "Paneer Tikka", price: 180, quantity: 1 },
@@ -48,8 +36,8 @@ export const INITIAL_BILLS: Bill[] = [
   },
   {
     billNo: "BILL-0040",
-    customerName: "Priya Nair",
-    customerWhatsapp: "9845012345",
+    customerName: "Walk-in Customer",
+    customerWhatsapp: undefined,
     items: [
       { itemId: 1, itemName: "Veg Spring Roll", price: 120, quantity: 2 },
       { itemId: 6, itemName: "Mango Lassi", price: 80, quantity: 1 }
@@ -79,8 +67,8 @@ export const INITIAL_BILLS: Bill[] = [
   },
   {
     billNo: "BILL-0038",
-    customerName: "Ravi Kumar",
-    customerWhatsapp: "9901234567",
+    customerName: "Walk-in Customer",
+    customerWhatsapp: undefined,
     items: [
       { itemId: 3, itemName: "Butter Chicken", price: 280, quantity: 2 },
       { itemId: 10, itemName: "Tandoori Roti", price: 30, quantity: 4 },
@@ -95,8 +83,8 @@ export const INITIAL_BILLS: Bill[] = [
   },
   {
     billNo: "BILL-0037",
-    customerName: "Suresh Babu",
-    customerWhatsapp: "9632145870",
+    customerName: "Walk-in Customer",
+    customerWhatsapp: undefined,
     items: [
       { itemId: 4, itemName: "Dal Makhani", price: 200, quantity: 1 },
       { itemId: 5, itemName: "Garlic Naan", price: 40, quantity: 3 },
@@ -111,8 +99,8 @@ export const INITIAL_BILLS: Bill[] = [
   },
   {
     billNo: "BILL-0036",
-    customerName: "Neha Gupta",
-    customerWhatsapp: "9818273645",
+    customerName: "Walk-in Customer",
+    customerWhatsapp: undefined,
     items: [
       { itemId: 11, itemName: "Chow Mein", price: 140, quantity: 1 },
       { itemId: 12, itemName: "Kulfi Falooda", price: 90, quantity: 2 }
@@ -126,8 +114,8 @@ export const INITIAL_BILLS: Bill[] = [
   },
   {
     billNo: "BILL-0035",
-    customerName: "Vikram Singh",
-    customerWhatsapp: "9123456789",
+    customerName: "Walk-in Customer",
+    customerWhatsapp: undefined,
     items: [
       { itemId: 2, itemName: "Paneer Tikka", price: 180, quantity: 2 },
       { itemId: 5, itemName: "Garlic Naan", price: 40, quantity: 4 },

@@ -1,5 +1,5 @@
 import { io, Socket } from "socket.io-client";
-import { AuthUser, MenuItem, Customer, Bill, StaffAccount, UserAccount } from "./types";
+import { AuthUser, MenuItem, Bill, StaffAccount, UserAccount } from "./types";
 
 const API_HOST = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "https://secret-vibez-pos-test-1.onrender.com" : "http://localhost:3000");
 const API_BASE = `${API_HOST}/api/v1`;
@@ -231,21 +231,6 @@ export const paymentApi = {
   }
 };
 
-export const customerApi = {
-  list: async (query?: string): Promise<Customer[]> => {
-    const q = query ? `?q=${encodeURIComponent(query)}` : "";
-    return request<Customer[]>(`/customers${q}`);
-  },
-  create: async (data: Partial<Customer>): Promise<Customer> => {
-    return request<Customer>("/customers", {
-      method: "POST",
-      body: JSON.stringify(data)
-    });
-  },
-  get: async (id: number): Promise<any> => {
-    return request<any>(`/customers/${id}`);
-  }
-};
 
 export const dashboardApi = {
   get: async (): Promise<any> => {

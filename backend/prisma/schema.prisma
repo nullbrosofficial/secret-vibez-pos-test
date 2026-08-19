@@ -60,25 +60,11 @@ model RestaurantTable {
   updatedAt   DateTime @updatedAt
 }
 
-model Customer {
-  id        Int      @id @default(autoincrement())
-  name      String
-  whatsapp  String   @unique
-  visits    Int      @default(0)
-  spent     Float    @default(0.0)
-  birthday  String?  // YYYY-MM-DD
-  orders    Order[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 model Order {
   id          Int             @id @default(autoincrement())
   orderNo     String          @unique // E.g., BILL-0041, BILL-0042
   tableId     Int?
   table       RestaurantTable? @relation(fields: [tableId], references: [id])
-  customerId  Int?
-  customer    Customer?       @relation(fields: [customerId], references: [id])
   userId      Int?
   user        User?           @relation(fields: [userId], references: [id])
   items       OrderItem[]

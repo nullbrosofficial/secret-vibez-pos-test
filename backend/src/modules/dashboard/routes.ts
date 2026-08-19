@@ -69,8 +69,7 @@ export default async function dashboardRoutes(fastify: FastifyInstance) {
     const recentOrders = await fastify.prisma.order.findMany({
       take: 5,
       include: {
-        table: true,
-        customer: true
+        table: true
       },
       orderBy: { createdAt: "desc" }
     });

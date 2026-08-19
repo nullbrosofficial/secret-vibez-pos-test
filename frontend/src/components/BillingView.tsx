@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from "react";
-import { MenuItem, Customer, Bill, BillDetail } from "../types";
-import { 
-  Search, Check, Printer, Send, 
-  CreditCard, Clock, CheckCircle2, AlertCircle, ShoppingBag, 
+import { MenuItem, Bill, BillDetail } from "../types";
+import {
+  Search, Check, Printer, Send,
+  CreditCard, Clock, CheckCircle2, AlertCircle, ShoppingBag,
   Percent, Building2, UserCircle, RefreshCw, Eye
 } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -10,10 +10,8 @@ import { billApi, orderApi, settingsApi } from "../api";
 
 interface BillingViewProps {
   menuItems: MenuItem[];
-  customers: Customer[];
   bills: Bill[];
   onAddBill: (newBill: Bill) => void;
-  onAddCustomer: (newCust: Customer) => void;
   isWhatsAppConnected: boolean;
   isGstEnabled?: boolean;
   gstRate?: number;
@@ -24,10 +22,8 @@ interface BillingViewProps {
 
 export default function BillingView({
   menuItems,
-  customers,
   bills,
   onAddBill,
-  onAddCustomer,
   isWhatsAppConnected,
   isGstEnabled = true,
   gstRate = 5,
@@ -72,8 +68,8 @@ export default function BillingView({
     if (!selectedOrder) return null;
     return {
       billNo: selectedOrder.orderNo,
-      customerName: selectedOrder.customer ? selectedOrder.customer.name : "Walk-in Customer",
-      customerWhatsapp: selectedOrder.customer ? selectedOrder.customer.whatsapp : undefined,
+      customerName: "Walk-in Customer",
+      customerWhatsapp: undefined,
       items: selectedOrder.items.map((i: any) => ({
         itemId: i.menuItemId,
         itemName: i.itemName,
@@ -109,8 +105,7 @@ export default function BillingView({
         const query = searchQuery.toLowerCase();
         const matchesTable = order.table?.tableNumber?.toLowerCase().includes(query);
         const matchesOrder = order.orderNo?.toLowerCase().includes(query);
-        const matchesCust = order.customer?.name?.toLowerCase().includes(query);
-        return matchesTable || matchesOrder || matchesCust;
+        return matchesTable || matchesOrder;
       }
 
       return true;
@@ -121,7 +116,7 @@ export default function BillingView({
   const handleSelectOrder = async (orderId: number, currentStatus: string) => {
     setErrorMessage(null);
     setSelectedOrderId(orderId);
-    
+
     const matched = queue.find(o => o.id === orderId);
     setDiscount(matched?.discount || 0);
 
@@ -191,8 +186,7 @@ export default function BillingView({
 
   const confirmSendWhatsApp = () => {
     if (!lastSavedBill) return;
-    setShowWhatsAppModal(false);
-    showToast(`WhatsApp receipt shared with ${lastSavedBill.customerWhatsapp || "Customer"}!`);
+    showToast("WhatsApp receipt shared!");
   };
 
   const whatsAppMessageText = useMemo(() => {
@@ -206,7 +200,7 @@ export default function BillingView({
 
   return (
     <div className="space-y-6 select-none">
-      
+
       {/* Top action row */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white border border-stone-200/80 p-5 rounded-2xl shadow-xs">
         <div>
@@ -246,10 +240,10 @@ export default function BillingView({
 
       {/* Main Layout Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
+
         {/* LEFT COLUMN: Bill Queue list (lg:col-span-2) */}
         <div className="lg:col-span-2 space-y-4">
-          
+
           {/* Filters & Search Row */}
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
@@ -258,22 +252,21 @@ export default function BillingView({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by table, order no or customer name..."
+                placeholder="Search by table or order no..."
                 className="w-full bg-white border border-stone-200 rounded-xl py-3 pl-10 pr-4 text-xs font-medium text-stone-900 placeholder-stone-400 focus:outline-none focus:border-[#E8872A]"
               />
             </div>
-            
+
             <div className="flex gap-1.5 overflow-x-auto pb-1 sm:pb-0">
               {(["All", "New", "Processing", "Paid", "Completed"] as const).map(tab => (
                 <button
                   key={tab}
                   type="button"
                   onClick={() => setActiveTab(tab)}
-                  className={`px-4.5 py-3 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
-                    activeTab === tab
-                      ? "bg-[#E8872A] text-stone-950 shadow-2xs"
-                      : "bg-white border border-stone-200 text-stone-600 hover:bg-stone-50"
-                  }`}
+                  className={`px-4.5 py-3 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${activeTab === tab
+                    ? "bg-[#E8872A] text-stone-950 shadow-2xs"
+                    : "bg-white border border-stone-200 text-stone-600 hover:bg-stone-50"
+                    }`}
                 >
                   {tab === "New" ? "New Bills" : tab}
                 </button>
@@ -304,9 +297,8 @@ export default function BillingView({
                 return (
                   <div
                     key={order.id}
-                    className={`bg-white border p-5 rounded-2xl flex flex-col justify-between transition-all space-y-4 shadow-2xs ${
-                      isSelected ? "border-[#E8872A] ring-2 ring-[#E8872A]/10" : "border-stone-200/80"
-                    }`}
+                    className={`bg-white border p-5 rounded-2xl flex flex-col justify-between transition-all space-y-4 shadow-2xs ${isSelected ? "border-[#E8872A] ring-2 ring-[#E8872A]/10" : "border-stone-200/80"
+                      }`}
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
@@ -320,22 +312,21 @@ export default function BillingView({
 
                       <div className="text-xs text-stone-500 space-y-1">
                         <div>Order: <strong className="text-stone-800 font-mono">#{order.orderNo}</strong></div>
-                        <div>Customer: <strong className="text-stone-800">{order.customer ? order.customer.name : "Walk-in"}</strong></div>
+                        <div>Customer: <strong className="text-stone-800">Walk-in</strong></div>
                         <div>Timestamp: <strong className="text-stone-800">{order.timestamp}</strong></div>
                       </div>
                     </div>
 
                     <div className="pt-3 border-t border-stone-100 flex items-center justify-between gap-3">
                       <span className="text-sm font-black text-stone-900">₹{order.grandTotal}</span>
-                      
+
                       <button
                         type="button"
                         onClick={() => handleSelectOrder(order.id, order.status)}
-                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
-                          isSelected
-                            ? "bg-stone-900 text-white"
-                            : "bg-[#E8872A] hover:bg-[#d47820] text-stone-950"
-                        }`}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${isSelected
+                          ? "bg-stone-900 text-white"
+                          : "bg-[#E8872A] hover:bg-[#d47820] text-stone-950"
+                          }`}
                       >
                         <Eye size={12} />
                         <span>View Bill</span>
@@ -357,7 +348,7 @@ export default function BillingView({
 
         {/* RIGHT COLUMN: Bill Detail Panel (lg:col-span-1) */}
         <div className="bg-stone-900 text-white rounded-2xl flex flex-col shadow-xl overflow-hidden min-h-[450px]">
-          
+
           {/* Header */}
           <div className="p-4 bg-stone-950 border-b border-stone-800 flex items-center gap-2">
             <Clock size={16} className="text-[#E8872A]" />
@@ -373,7 +364,7 @@ export default function BillingView({
 
           {selectedOrder ? (
             <div className="flex-1 flex flex-col justify-between p-4 space-y-4">
-              
+
               {/* Receipt Info details */}
               <div className="space-y-4">
                 <div className="border-b border-stone-800 pb-3 text-xs text-stone-400 leading-tight space-y-1">
@@ -398,7 +389,7 @@ export default function BillingView({
 
               {/* Pricing breakdown & Payment triggers */}
               <div className="border-t border-stone-800 pt-3 space-y-4">
-                
+
                 {/* Discount input box (Owner & Cashier authorised) */}
                 {(selectedOrder.status === "BILL_REQUESTED" || selectedOrder.status === "PROCESSING") && (
                   <div className="space-y-1.5 bg-stone-950/60 p-3 rounded-xl border border-stone-800">
@@ -452,11 +443,10 @@ export default function BillingView({
                           key={method}
                           type="button"
                           onClick={() => setPaymentMethod(method)}
-                          className={`py-2 rounded-xl text-[10px] font-bold tracking-tight transition-all cursor-pointer border ${
-                            paymentMethod === method
-                              ? "bg-white text-stone-950 border-white shadow-xs"
-                              : "bg-stone-800 text-stone-400 border-stone-700 hover:text-white"
-                          }`}
+                          className={`py-2 rounded-xl text-[10px] font-bold tracking-tight transition-all cursor-pointer border ${paymentMethod === method
+                            ? "bg-white text-stone-950 border-white shadow-xs"
+                            : "bg-stone-800 text-stone-400 border-stone-700 hover:text-white"
+                            }`}
                         >
                           {method}
                         </button>
@@ -573,12 +563,12 @@ export default function BillingView({
               <button onClick={() => setShowReceiptModal(false)} className="text-stone-400 hover:text-white cursor-pointer text-xs">✕</button>
             </div>
             <div className="p-6 bg-stone-50 flex justify-center border-b border-stone-150">
-              
+
               {/* Receipt Body */}
               <div className="bg-white p-5 border border-stone-200 shadow-xs max-w-[280px] w-full text-[10px] text-stone-700 font-mono leading-normal select-text">
                 <div className="text-center font-bold text-xs uppercase text-stone-900">{businessName}</div>
                 <div className="text-center text-[9px] text-stone-500 mb-4">{settingsData?.address || "Goa, India"}</div>
-                
+
                 <div className="border-t border-dashed border-stone-300 py-2 space-y-1 text-[9px]">
                   <div>RECEIPT: {lastSavedBill.billNo}</div>
                   <div>DATE: {lastSavedBill.date} {lastSavedBill.timestamp}</div>
@@ -613,7 +603,7 @@ export default function BillingView({
               </div>
 
             </div>
-            
+
             <div className="p-4 bg-white flex justify-between gap-3">
               <button
                 onClick={() => {

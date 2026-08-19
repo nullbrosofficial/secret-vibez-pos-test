@@ -11,7 +11,6 @@ import menuRoutes from "./modules/menu/routes";
 import tableRoutes from "./modules/tables/routes";
 import orderRoutes from "./modules/orders/routes";
 import paymentRoutes from "./modules/payments/routes";
-import customerRoutes from "./modules/customers/routes";
 import dashboardRoutes from "./modules/dashboard/routes";
 import reportsRoutes from "./modules/reports/routes";
 import settingsRoutes from "./modules/settings/routes";
@@ -127,7 +126,6 @@ export function buildApp(): FastifyInstance {
     api.register(tableRoutes, { prefix: "/tables" });
     api.register(orderRoutes, { prefix: "/orders" });
     api.register(paymentRoutes, { prefix: "/payments" });
-    api.register(customerRoutes, { prefix: "/customers" });
     api.register(dashboardRoutes, { prefix: "/dashboard" });
     api.register(reportsRoutes, { prefix: "/reports" });
     api.register(settingsRoutes, { prefix: "/settings" });

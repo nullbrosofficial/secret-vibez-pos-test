@@ -3,7 +3,6 @@ import { z } from "zod";
 
 const createOrderSchema = z.object({
   tableId: z.number().int().optional().nullable(),
-  customerId: z.number().int().optional().nullable(),
   discount: z.number().nonnegative().default(0),
   items: z.array(z.object({
     menuItemId: z.number().int(),
@@ -59,7 +58,6 @@ export default async function orderRoutes(fastify: FastifyInstance) {
       where,
       include: {
         table: true,
-        customer: true,
         user: true,
         items: {
           include: { menuItem: true }
@@ -82,7 +80,6 @@ export default async function orderRoutes(fastify: FastifyInstance) {
       where: { id },
       include: {
         table: true,
-        customer: true,
         user: true,
         items: {
           include: { menuItem: true }
@@ -107,7 +104,7 @@ export default async function orderRoutes(fastify: FastifyInstance) {
       return reply.status(400).send({ error: "Invalid order payload", details: parseResult.error.format() });
     }
 
-    const { tableId, customerId, discount, items, status } = parseResult.data;
+    const { tableId, discount, items, status } = parseResult.data;
     const userId = request.user.sub;
 
     // Load active settings to apply GST
@@ -165,7 +162,6 @@ export default async function orderRoutes(fastify: FastifyInstance) {
         data: {
           orderNo,
           tableId,
-          customerId,
           userId,
           subtotal,
           discount,
@@ -180,8 +176,7 @@ export default async function orderRoutes(fastify: FastifyInstance) {
         },
         include: {
           items: true,
-          table: true,
-          customer: true
+          table: true
         }
       });
 
@@ -274,7 +269,7 @@ export default async function orderRoutes(fastify: FastifyInstance) {
       });
 
       // Synchronize table status
-      if (res.tableId) {
+      if (res.tableId && res.table) {
         let tableStatus = res.table.status;
         if (newStatus === "SENT_TO_KITCHEN" || newStatus === "PREPARING" || newStatus === "READY" || newStatus === "SERVED") {
           tableStatus = "OCCUPIED";

@@ -23,7 +23,7 @@ export default async function paymentRoutes(fastify: FastifyInstance) {
     // Retrieve the order details
     const order = await fastify.prisma.order.findUnique({
       where: { id: orderId },
-      include: { table: true, customer: true }
+      include: { table: true }
     });
 
     if (!order) {
@@ -63,16 +63,7 @@ export default async function paymentRoutes(fastify: FastifyInstance) {
         fastify.io.emit("table.status_changed", releasedTable);
       }
 
-      // 4. Aggregate customer spending stats
-      if (order.customerId) {
-        await tx.customer.update({
-          where: { id: order.customerId },
-          data: {
-            visits: { increment: 1 },
-            spent: { increment: order.grandTotal }
-          }
-        });
-      }
+
 
       return { payment, order: updatedOrder };
     });

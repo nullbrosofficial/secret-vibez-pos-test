@@ -17,7 +17,6 @@ export default async function billRoutes(fastify: FastifyInstance) {
       },
       include: {
         table: true,
-        customer: true,
         user: true,
         payment: true,
         items: {
@@ -43,7 +42,6 @@ export default async function billRoutes(fastify: FastifyInstance) {
       where: { id },
       include: {
         table: true,
-        customer: true,
         user: true,
         payment: true,
         items: {
@@ -147,16 +145,7 @@ export default async function billRoutes(fastify: FastifyInstance) {
         fastify.io?.emit("table.status_changed", cleaningTable);
       }
 
-      // 4. Update customer loyalty spent statistics
-      if (order.customerId) {
-        await tx.customer.update({
-          where: { id: order.customerId },
-          data: {
-            visits: { increment: 1 },
-            spent: { increment: grandTotal }
-          }
-        });
-      }
+
 
       return { payment: createdPayment, order: updatedOrder };
     });

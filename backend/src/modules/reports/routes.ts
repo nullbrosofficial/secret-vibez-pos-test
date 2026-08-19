@@ -42,7 +42,6 @@ export default async function reportsRoutes(fastify: FastifyInstance) {
       },
       include: {
         table: true,
-        customer: true,
         items: true,
         payment: true
       },

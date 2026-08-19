@@ -43,7 +43,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
     switch (roleNameLower) {
       case "owner":
         defaultPage = "billing";
-        allowedPages = ["billing", "orders", "kitchen", "menu", "customers", "sales", "settings"];
+        allowedPages = ["billing", "orders", "kitchen", "menu", "sales", "settings"];
         break;
       case "cashier":
         defaultPage = "billing";
@@ -103,7 +103,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
     switch (roleNameLower) {
       case "owner":
         defaultPage = "billing";
-        allowedPages = ["billing", "orders", "kitchen", "menu", "customers", "sales", "settings"];
+        allowedPages = ["billing", "orders", "kitchen", "menu", "sales", "settings"];
         break;
       case "cashier":
         defaultPage = "billing";

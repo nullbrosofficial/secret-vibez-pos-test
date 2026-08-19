@@ -36,7 +36,7 @@ To populate the database with initial roles, users, categories, tables, and sett
 ```bash
 npm run db:seed
 ```
-This seed script is safe and non-destructive: it checks if the database is already seeded by counting roles, and exits early if it is already populated to avoid wiping or overwriting any existing customer or sales data.
+This seed script is safe and non-destructive: it checks if the database is already seeded by counting roles, and exits early if it is already populated to avoid wiping or overwriting any existing sales data.
 
 ---
 
@@ -46,7 +46,7 @@ Use the following settings when deploying to Render:
 
 ### Web Service Settings
 - **Runtime**: `Node`
-- **Build Command**: `npm install && npm run build && npm run db:generate && npm run db:migrate`
+- **Build Command**: `npm install && npm run build && npm run db:generate && npm run db:migrate && npm run db:seed`
 - **Start Command**: `npm run start`
 
 ### Required Environment Variables

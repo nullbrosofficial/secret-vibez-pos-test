@@ -3,7 +3,6 @@ export type PageId =
   | "orders" 
   | "kitchen" 
   | "menu" 
-  | "customers" 
   | "sales" 
   | "settings";
 
@@ -31,14 +30,6 @@ export interface MenuItem {
   availability?: boolean;
 }
 
-export interface Customer {
-  id: number;
-  name: string;
-  whatsapp: string;
-  visits: number;
-  spent: number;
-  birthday?: string;
-}
 
 export interface BillDetail {
   itemId: number;

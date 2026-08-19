@@ -310,7 +310,6 @@ export default function SalesView() {
                   <thead>
                     <tr className="bg-stone-50 text-stone-500 font-bold uppercase tracking-wider border-b border-stone-100">
                       <th className="p-3 pl-4">Bill No</th>
-                      <th className="p-3">Customer Link</th>
                       <th className="p-3">Invoiced Meal Items</th>
                       <th className="p-3">Time & Date</th>
                       <th className="p-3">Status</th>
@@ -322,14 +321,7 @@ export default function SalesView() {
                       orders.map((bill: any, index: number) => (
                         <tr key={index} className="hover:bg-stone-50/50 transition-colors">
                           <td className="p-3 pl-4 font-mono font-extrabold text-stone-900">{bill.orderNo}</td>
-                          <td className="p-3 font-semibold text-stone-900">
-                            <div>
-                              {bill.customer ? bill.customer.name : "Walk-in Customer"}
-                              {bill.customer?.whatsapp && (
-                                <span className="block font-mono text-[9px] text-stone-400">{bill.customer.whatsapp}</span>
-                              )}
-                            </div>
-                          </td>
+
                           <td className="p-3 text-stone-500 font-medium truncate max-w-[200px]">
                             {bill.items.map((it: any, idx: number) => (
                               <span key={idx}>

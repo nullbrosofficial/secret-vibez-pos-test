@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { StaffAccount, MenuItem, Customer, Bill, AuthUser, UserAccount } from "../types";
+import { StaffAccount, MenuItem, Bill, AuthUser, UserAccount } from "../types";
 import { 
   Building2, Percent, Printer, Users, Database, 
   Check, Download, Upload, Trash2, Plus, RefreshCw, 
@@ -24,7 +24,6 @@ interface SettingsViewProps {
   gstRate: number;
   setGstRate: (rate: number) => void;
   menuItems?: MenuItem[];
-  customers?: Customer[];
   bills?: Bill[];
   onRestoreData?: (data: {
     businessName?: string;
@@ -32,7 +31,6 @@ interface SettingsViewProps {
     gstRate?: number;
     isGstEnabled?: boolean;
     menuItems?: MenuItem[];
-    customers?: Customer[];
     bills?: Bill[];
     staff?: StaffAccount[];
   }) => void;
@@ -52,7 +50,6 @@ export default function SettingsView({
   gstRate,
   setGstRate,
   menuItems = [],
-  customers = [],
   bills = [],
   onRestoreData,
   onResetTransactions
@@ -260,7 +257,6 @@ export default function SettingsView({
               receiptFooterMessage
             },
             menuItems,
-            customers,
             bills
           };
 
@@ -305,7 +301,6 @@ export default function SettingsView({
               gstRate: parsed.businessSettings?.gstRate,
               isGstEnabled: parsed.businessSettings?.isGstEnabled,
               menuItems: parsed.menuItems,
-              customers: parsed.customers,
               bills: parsed.bills,
               staff: parsed.staff
             });
@@ -1092,10 +1087,7 @@ export default function SettingsView({
                 <div className="text-2xl font-black text-stone-900 font-display">{bills.length}</div>
               </div>
 
-              <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200/80 text-center space-y-1">
-                <div className="text-[10px] font-extrabold text-stone-500 uppercase tracking-wider">CRM Records</div>
-                <div className="text-2xl font-black text-stone-900 font-display">{customers.length}</div>
-              </div>
+
 
               <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200/80 text-center space-y-1">
                 <div className="text-[10px] font-extrabold text-stone-500 uppercase tracking-wider">Terminal Build</div>

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { PageId, UserRole, MenuItem, Customer, Bill, StaffAccount, AuthUser } from "./types";
+import { PageId, UserRole, MenuItem, Bill, StaffAccount, AuthUser } from "./types";
 import { 
   INITIAL_CATEGORIES, 
   INITIAL_MENU_ITEMS, 
-  INITIAL_CUSTOMERS, 
   INITIAL_BILLS, 
   INITIAL_STAFF 
 } from "./mockData";
 import { getStoredUser, clearStoredUser, isPageAllowed } from "./authData";
-import { clearAccessToken, menuApi, customerApi, orderApi, settingsApi, categoryApi, getSocketConnection, disconnectSocket } from "./api";
+import { clearAccessToken, menuApi, orderApi, settingsApi, categoryApi, getSocketConnection, disconnectSocket } from "./api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 // Views
@@ -18,7 +17,6 @@ import BillingView from "./components/BillingView";
 import OrdersView from "./components/OrdersView";
 import KitchenView from "./components/KitchenView";
 import MenuView from "./components/MenuView";
-import CustomersView from "./components/CustomersView";
 import SalesView from "./components/SalesView";
 import SettingsView from "./components/SettingsView";
 
@@ -162,7 +160,6 @@ export default function App() {
 
     socket.on("payment.completed", () => {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
-      queryClient.invalidateQueries({ queryKey: ["customers"] });
       queryClient.invalidateQueries({ queryKey: ["tables"] });
       queryClient.invalidateQueries({ queryKey: ["billsQueue"] });
     });
@@ -197,11 +194,7 @@ export default function App() {
     enabled: !!authUser
   });
 
-  const { data: customersData } = useQuery({
-    queryKey: ["customers"],
-    queryFn: () => customerApi.list(),
-    enabled: !!authUser
-  });
+
 
   const { data: ordersData } = useQuery({
     queryKey: ["orders"],
@@ -220,7 +213,7 @@ export default function App() {
   // Map variables
   const menuItems = menuItemsData || [];
   const categoriesList = categoriesData ? categoriesData.map(c => c.name) : INITIAL_CATEGORIES;
-  const customers = customersData || [];
+
   const isWhatsAppConnected = true; // Simple live diagnostic placeholder
 
   const isGstEnabled = settingsData?.isGstEnabled ?? true;
@@ -231,8 +224,8 @@ export default function App() {
   // Map order database list to Bill structure
   const bills = (ordersData || []).map((order: any) => ({
     billNo: order.orderNo,
-    customerName: order.customer ? order.customer.name : "Walk-in Customer",
-    customerWhatsapp: order.customer ? order.customer.whatsapp : undefined,
+    customerName: "Walk-in Customer",
+    customerWhatsapp: undefined,
     items: order.items.map((i: any) => ({
       itemId: i.menuItemId,
       itemName: i.itemName,
@@ -296,19 +289,10 @@ export default function App() {
 
 
 
-  // Customer Mutation
-  const addCustomerMutation = useMutation({
-    mutationFn: (cust: Partial<Customer>) => customerApi.create(cust),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["customers"] })
-  });
-
-  const handleAddCustomer = (cust: any) => addCustomerMutation.mutate(cust);
-
   // Bill Mutation
   const handleAddBill = (newBill: any) => {
     // In our live setup checkout is initiated directly in BillingView
     queryClient.invalidateQueries({ queryKey: ["orders"] });
-    queryClient.invalidateQueries({ queryKey: ["customers"] });
   };
 
   const handleRestoreData = (data: any) => {};
@@ -346,7 +330,6 @@ export default function App() {
     { id: "orders", label: "Order Taking", icon: Utensils },
     { id: "kitchen", label: "Kitchen Display (KDS)", icon: ChefHat },
     { id: "menu", label: "Menu Management", icon: BookOpen },
-    { id: "customers", label: "Customer Database", icon: Users },
     { id: "sales", label: "Sales & Reports", icon: BarChart3 },
     { id: "settings", label: "Desk Settings", icon: Settings }
   ];
@@ -510,10 +493,8 @@ export default function App() {
                 {activePage === "billing" && (
                   <BillingView 
                     menuItems={menuItems}
-                    customers={customers}
                     bills={bills}
                     onAddBill={handleAddBill}
-                    onAddCustomer={handleAddCustomer}
                     isWhatsAppConnected={isWhatsAppConnected}
                     isGstEnabled={isGstEnabled}
                     gstRate={gstRate}
@@ -541,13 +522,7 @@ export default function App() {
                   />
                 )}
 
-                {activePage === "customers" && (
-                  <CustomersView 
-                    customers={customers}
-                    bills={bills}
-                    onAddCustomer={handleAddCustomer}
-                  />
-                )}
+
 
                 {activePage === "sales" && (
                   <SalesView 
@@ -567,7 +542,6 @@ export default function App() {
                     gstRate={gstRate}
                     setGstRate={setGstRate}
                     menuItems={menuItems}
-                    customers={customers}
                     bills={bills}
                     onRestoreData={handleRestoreData}
                     onResetTransactions={handleResetTransactions}

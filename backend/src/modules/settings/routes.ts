@@ -7,8 +7,8 @@ const settingsUpdateSchema = z.object({
   address: z.string().min(1),
   phone: z.string().min(1),
   gstNumber: z.string().min(1),
-  receiptHeader: z.string().optional().nullable(),
-  receiptFooter: z.string().optional().nullable(),
+  receiptHeader: z.string().optional(),
+  receiptFooter: z.string().optional(),
   isGstEnabled: z.boolean(),
   gstRate: z.number().nonnegative(),
   currency: z.string().default("INR")

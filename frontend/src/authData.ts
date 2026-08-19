@@ -12,7 +12,7 @@ export const MOCK_ACCOUNTS: MockAccountConfig[] = [
     name: "Rajesh Kumar",
     role: "owner",
     displayRoleName: "Owner",
-    allowedPages: ["billing", "orders", "kitchen", "menu", "customers", "sales", "settings"],
+    allowedPages: ["billing", "orders", "kitchen", "menu", "sales", "settings"],
     defaultPage: "billing"
   },
   {

@@ -1,7 +1,7 @@
 # Secret Vibez - Billing POS & Desk Management System
 
 ## Executive Overview
-A full-stack modern Point of Sale (POS) and Restaurant Desk Management application designed for dining establishments and retail outlets. The system provides real-time POS billing, menu item management, customer tracking, automated WhatsApp bill distribution, sales analytics, and customizable GST tax configuration.
+A full-stack modern Point of Sale (POS) and Restaurant Desk Management application designed for dining establishments and retail outlets. The system provides real-time POS billing, menu item management, automated WhatsApp bill distribution, sales analytics, and customizable GST tax configuration.
 
 ---
 
@@ -20,20 +20,12 @@ A full-stack modern Point of Sale (POS) and Restaurant Desk Management applicati
 - **Veg / Non-Veg Categorization**: Clear visual indicators for dietary tags.
 - **Price Customization**: Update item prices instantly across all billing screens.
 
-### 👥 3. Customer CRM Database (`CustomersView.tsx`)
-- **Customer History**: Tracks total visits, phone numbers, and aggregate spend per guest.
-- **POSIX Auto-suggest**: Quick customer lookup during checkout.
-
-### 📢 4. WhatsApp Promotional Blaster (`BroadcastsView.tsx`)
-- **Targeted Messaging**: Broadcast discounts, seasonal menus, or announcements directly to saved customers.
-- **Connection Diagnostics**: Monitor connection state for WhatsApp integration.
-
-### 📊 5. Sales Analytics & Audit (`SalesView.tsx`)
+### 📊 3. Sales Analytics & Audit (`SalesView.tsx`)
 - **Revenue Dashboard**: Daily, weekly, and monthly sales performance visualized via Recharts.
 - **Payment Split Insights**: Breakdown of Cash vs. UPI vs. Card settlements.
 - **Transaction History**: Audit trail of processed bills with search and refund options.
 
-### ⚙️ 6. Desk Settings & Tax Config (`SettingsView.tsx`)
+### ⚙️ 4. Desk Settings & Tax Config (`SettingsView.tsx`)
 - **GST Tax Toggle & Custom Rate**:
   - Easily turn GST calculation **ON** or **OFF**.
   - Edit tax percentages (0% to 100%) with quick presets (5%, 12%, 18%, 28%).
@@ -75,8 +67,6 @@ A full-stack modern Point of Sale (POS) and Restaurant Desk Management applicati
 │   └── components/
 │       ├── BillingView.tsx    # Live POS terminal & invoice generator
 │       ├── MenuView.tsx       # Dish catalog manager
-│       ├── CustomersView.tsx  # Customer CRM directory
-│       ├── BroadcastsView.tsx # WhatsApp marketing blaster
 │       ├── SalesView.tsx      # Sales performance analytics & bill logs
 │       └── SettingsView.tsx   # Desk settings, GST tax configuration & staff RBAC
 ```
