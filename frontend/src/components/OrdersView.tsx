@@ -276,18 +276,22 @@ export default function OrdersView({ menuItems, isOnline = true }: OrdersViewPro
               className={`border p-4.5 rounded-2xl flex flex-col justify-between cursor-pointer transition-all space-y-3 select-none ${cardBg}`}
             >
               <div>
-                <div className="flex justify-between items-start">
-                  <span className="text-xs font-black tracking-tight">Table {table.tableNumber}</span>
-                  <span className={`px-2 py-0.5 rounded text-[8px] uppercase tracking-wider font-extrabold ${badgeColor}`}>
-                    {table.status}
+                <div className="flex justify-between items-center gap-1">
+                  <span className="text-xs font-black tracking-tight whitespace-nowrap">Table {table.tableNumber}</span>
+                  <span className={`px-2 py-0.5 rounded text-[8px] uppercase tracking-wider font-extrabold whitespace-nowrap shrink-0 ${badgeColor}`}>
+                    {table.status === "BILL_REQUESTED" ? "BILL REQ." : table.status}
                   </span>
                 </div>
                 <div className="text-[10px] text-stone-400 mt-1">{table.capacity} Seats</div>
               </div>
 
-              {activeOrder && (
+              {activeOrder ? (
                 <div className="pt-2 border-t border-dashed border-stone-150/20 text-[9px] text-stone-400 font-mono">
                   Order: #{activeOrder.orderNo}
+                </div>
+              ) : (
+                <div className="pt-2 border-t border-dashed border-transparent text-[9px] text-transparent font-mono select-none">
+                  &nbsp;
                 </div>
               )}
             </div>
