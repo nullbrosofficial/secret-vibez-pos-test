@@ -6,17 +6,12 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("Seeding database...");
 
-  // 1. Clean existing data
-  await prisma.payment.deleteMany({});
-  await prisma.orderItem.deleteMany({});
-  await prisma.order.deleteMany({});
-  await prisma.customer.deleteMany({});
-  await prisma.menuItem.deleteMany({});
-  await prisma.menuCategory.deleteMany({});
-  await prisma.restaurantTable.deleteMany({});
-  await prisma.user.deleteMany({});
-  await prisma.role.deleteMany({});
-  await prisma.restaurantSettings.deleteMany({});
+  // Check if data already exists to avoid resetting it
+  const rolesCount = await prisma.role.count();
+  if (rolesCount > 0) {
+    console.log("Database already has roles. Skipping seed to prevent overwriting existing data.");
+    return;
+  }
 
   // 2. Seed Roles
   const ownerRole = await prisma.role.create({

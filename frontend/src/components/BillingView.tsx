@@ -38,7 +38,7 @@ export default function BillingView({
   const queryClient = useQueryClient();
 
   // Queries
-  const { data: queue = [], isLoading, refetch } = useQuery({
+  const { data: queue = [], isLoading, refetch, isFetching } = useQuery({
     queryKey: ["billsQueue"],
     queryFn: billApi.getQueue
   });
@@ -222,10 +222,11 @@ export default function BillingView({
         <button
           type="button"
           onClick={() => refetch()}
-          className="bg-stone-100 hover:bg-stone-200 text-stone-700 font-extrabold text-xs px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shrink-0 border border-stone-200"
+          disabled={isFetching}
+          className="bg-stone-100 hover:bg-stone-200 disabled:opacity-85 text-stone-700 font-extrabold text-xs px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shrink-0 border border-stone-200"
         >
-          <RefreshCw size={13} />
-          <span>Refresh Queue</span>
+          <RefreshCw size={13} className={isFetching ? "animate-spin" : ""} />
+          <span>{isFetching ? "Refreshing..." : "Refresh Queue"}</span>
         </button>
       </div>
 
